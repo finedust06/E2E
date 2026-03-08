@@ -1,8 +1,11 @@
-import random
+import secrets
 import uuid
 
 from util.image_util import text_to_image_base64
 from util.hash_util import make_hash
+from util.crypto import generate_rsa_keypair, decrypt_data
+
+SESSION_KEYS = {}
 
 EMPTY_TOKEN = "empty"
 
@@ -10,7 +13,9 @@ def generate_keypad():
     session_id = str(uuid.uuid4())
 
     nums = [str(i) for i in range(10)] + [" ", " "]
-    random.shuffle(nums)
+
+    rng = secrets.SystemRandom()
+    rng.shuffle(nums)
 
     keypad_data = []
     for num in nums:
